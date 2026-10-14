@@ -1,0 +1,34 @@
+#
+#   MAKEFILE for for comp2 program which computes the annular eigenfrequencies
+#
+PROGNAME= 	comp2
+BIN=		.
+PROG=		$(BIN)/$(PROGNAME)
+lib1=		../libsk3/nasalib
+ 
+OBJECTS= 	CompXmn2.o	
+
+#==========================
+# compiler
+#==========================
+
+FC = pgf95
+
+
+FFLAGS = -O3     -tp=x64
+
+ 
+all prod test debug:	$(PROG)
+
+.KEEP_STATE:
+ 
+# Rule for executables
+%.o : %.f95
+		$(FC) -c $(FFLAGS) $< -o $@
+
+$(PROG):	$(OBJECTS) 
+		$(FC) $(FFLAGS) -o $@ $(OBJECTS) $(LDFLAGS)  \
+		$(lib1)/nasalib.a
+
+clean:
+		rm $(OBJECTS)
