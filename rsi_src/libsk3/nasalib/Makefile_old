@@ -1,0 +1,49 @@
+#########################################################################
+# Makefile to build and maintain the V070 System library                #
+#   Uses ar rv nasalib.a (members that were updated) to update lib      #
+#                                                                       #
+# To execute: type make-- this will recompile (optimized) the fortran   #
+#                         files that have changed since v070_nasalib was#
+#                         made.                                         #
+# To debug code: type make debug -- this will recompile updated         #
+#                                   routines will the -g (debug) option #
+#                                   Might need to run touch on routines #
+#                                   that you want to debug that you     #
+#                                   haven't made any recent changes     #
+#########################################################################
+#
+LIBRARY  = v070_nasalib.a
+all debug: $(LIBRARY)
+#
+#########################################################################
+# Define Macros                                                         #
+#########################################################################
+FFLAGS = -O
+debug := FFLAGS= -g        
+#
+#########################################################################
+# Define Library Contents                                               #
+#########################################################################
+#     v070 utilities
+ 
+MEMBERS  = anfu.o
+MEMBERS += anrt.o
+MEMBERS += besj.o
+MEMBERS += besy.o
+MEMBERS += casc.o
+MEMBERS += eigen.o
+MEMBERS += isig.o
+MEMBERS += kernel.o
+MEMBERS += phithh.o
+MEMBERS += phixht.o
+MEMBERS += rmode.o
+ 
+#########################################################################
+# Define Library Dependencies                                           #
+#########################################################################
+.PRECIOUS  : $(LIBRARY)
+$(LIBRARY) : $(LIBRARY)($(MEMBERS)) 
+##	ar rv $@ $?
+##	echo $%
+	ranlib $@
+#

@@ -1,0 +1,37 @@
+
+# Makefile to build and maintain the linpack library
+# To execute: type Make
+# This will recompile (optimized) the fortran files that have changed
+# since linpack.a was made.
+#....................................................................
+
+
+LIBRARY  = linpack.a
+all debug: $(LIBRARY)
+
+
+# Define Macros
+
+FFLAGS = -O0 -axW -pad -align -w95 -zero
+
+
+# Define Library Content
+
+MEMBERS  = dcabs1.o\
+	   dzasum.o\
+	   izamax.o\
+	   zaxpy.o\
+	   zdotc*16.o\
+	   zdscal.o\
+	   zgeco.o\
+   	   zgefa.o\
+	   zgesl.o\
+	   zscal.o 
+ 
+
+# Define Library Dependencies
+
+.PRECIOUS  : $(LIBRARY)
+$(LIBRARY) : $(MEMBERS)
+	ar rsv $@ $?
+

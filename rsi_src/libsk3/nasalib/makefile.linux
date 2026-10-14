@@ -1,0 +1,32 @@
+# Makefile to build and maintain the nasalib library
+# To execute: type Make
+# This will recompile (optimized) the fortran files that have changed
+# since nasalib.a was made.
+
+
+LIBRARY  = nasalib.a
+all debug: $(LIBRARY)
+
+
+# Define Macros
+
+FFLAGS = -O0 -axW -pad -align -w95 -zero
+
+# Define Library Content
+ 
+MEMBERS  = anfu.o\
+	   anrt.o\
+	   besj.o\
+	   besy.o\
+	   eigen.o\
+	   isig.o\
+	   kernel.o\
+	   rmode.o\
+	   fac.o
+ 
+
+# Define Library Dependencies
+
+.PRECIOUS  : $(LIBRARY)
+$(LIBRARY) : $(MEMBERS) 
+	ar rsv $@ $?

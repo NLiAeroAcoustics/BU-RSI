@@ -1,0 +1,69 @@
+#########################################################################
+# Makefile to build and maintain the V070 System library                #
+#   Uses ar rv linpack.a (members that were updated) to update lib      #
+#                                                                       #
+# To execute: type make -f Makefile.iris -- this will recompile         #
+#                                           (optimized) the fortran     #
+#                                           files that have changed     #
+#                                           since linpack_iris.a        #
+#                                           was made.                   #
+#########################################################################
+#
+LIBRARY  = linpack.a
+all debug: $(LIBRARY)
+#
+#########################################################################
+# Define Macros                                                         #
+#########################################################################
+
+#==========================
+# suffixes
+#==========================
+
+# delete default suffixes (just to be safe)
+.SUFFIXES:
+
+# define new suffixes
+.SUFFIXES: .o .f
+
+.f.o:
+	$(F77) $(FFLAGS) $*.f
+
+
+#==========================
+# compiler
+#==========================
+
+F77 = pgf77
+
+FFLAGS = -O3 -c  -mcmodel medium
+
+#FFLAGS = -O3 -mips4 -static
+#debug := FFLAGS= -g        
+#
+#########################################################################
+# Define Library Contents                                               #
+#########################################################################
+#     
+ 
+MEMBERS  =	dcabs1.o\
+		dzasum.o\
+		izamax.o\
+		zaxpy.o\
+		zdotc*16.o\
+		zdscal.o\
+		zgeco.o\
+		zgefa.o\
+		zgesl.o\
+		zscal.o 
+ 
+#########################################################################
+# Define Library Dependencies                                           #
+#########################################################################
+ 
+.PRECIOUS  : $(LIBRARY)
+$(LIBRARY) : $(MEMBERS)
+	ar rsv $@ $?
+##	echo $%
+#	ranlib $@
+#

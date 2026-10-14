@@ -1,0 +1,66 @@
+#########################################################################
+# Makefile to build and maintain the V070 System library                #
+#   Uses ar rsv nasalib.a (members that were updated) to update lib     #
+#                                                                       #
+# To execute: type make -f Makefile.iris -- this will recompile         #
+#                                           (optimized) the fortran     #
+#                                           files that have changed     #
+#                                           since nasalib_iris.a        #
+#                                           was made.                   #
+#########################################################################
+#
+LIBRARY  = nasalib.a
+all debug: $(LIBRARY)
+#
+#########################################################################
+# Define Macros                                                         #
+#########################################################################
+
+#==========================
+# suffixes
+#==========================
+
+# delete default suffixes (just to be safe)
+.SUFFIXES:
+
+# define new suffixes
+.SUFFIXES: .o .f
+
+.f.o:
+	$(F77) $(FFLAGS) $*.f
+#==========================
+# compiler
+#==========================
+
+F77 = pgf77
+
+FFLAGS = -O3 -c  -mcmodel medium 
+#FFLAGS = -O3 -mips4 -static
+#debug := FFLAGS= -g        
+#
+#########################################################################
+# Define Library Contents                                               #
+#########################################################################
+#
+ 
+MEMBERS  =	anfu.o\
+		anrt.o\
+		besj.o\
+		besy.o\
+		eigen.o\
+		isig.o\
+		kernel.o\
+		rmode.o\
+		fac.o
+
+
+ 
+#########################################################################
+# Define Library Dependencies                                           #
+#########################################################################
+.PRECIOUS  : $(LIBRARY)
+$(LIBRARY) : $(MEMBERS) 
+	ar rsv $@ $?
+##	echo $%
+#	ranlib $@
+#
