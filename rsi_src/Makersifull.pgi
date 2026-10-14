@@ -1,0 +1,47 @@
+#
+#   MAKEFILE for rsi95  (Sheryl Grace's 2014 version of the RSI code) 
+#
+PROGNAME=	rsi95
+BIN=		.
+PROG=		$(BIN)/$(PROGNAME)
+lib1=		libsk3/nasalib
+lib2=		libsk3/linpacklib
+ 
+# rsi95.f =	rsi.f95   \
+#		get_Pmns.f95 \
+#		casc_k3_no_r.f
+ 
+OBJECTS = 	rsi.o   \
+                get_Pmns.o \
+                casc_k3_no_r.o
+
+
+#==========================
+# compiler
+#==========================
+
+FC = pgf95
+
+FFLAGS = -O3  -mcmodel medium  -tp=x64
+# above is for my node 64 bit operation
+
+#FFLAGS = -O3   -mcmodel medium -mp
+#FFLAGS = -O3   -mcmodel medium -mp -tp=nehalem
+#FFLAGS = -O3   -tp=nehalem
+#FFLAGS= -g -O -static
+ 
+all prod test debug:	$(PROG)
+
+.KEEP_STATE:
+ 
+# Rule for executables
+
+%.o : %.f95
+		$(FC) -c $(FFLAGS) $< -o $@
+
+$(PROG):	$(OBJECTS) 
+		$(FC) $(FFLAGS)  -o $@    $(OBJECTS) $(LDFLAGS)  \
+		$(lib1)/nasalib.a $(lib2)/linpack.a 
+
+clean:
+		rm $(OBJECTS)
