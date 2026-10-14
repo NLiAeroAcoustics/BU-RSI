@@ -1,0 +1,7 @@
+ &inputconst 
+ NV = 45, NB = 18, NRdat=45, NRcalc = 25, NC = 80,
+ NF = 6, Ng = 200, 
+ T = 540.11, rho = 0.0833,  M_ann = 0.42, iSTDYL = 0, 
+ tipc_to_tipr = 0.145, hub_to_tip = 0.5604, 
+ RDUCT =11.31,  BW = 1.000, conv_tol_xmn = 0.0001 
+ /
